@@ -39,7 +39,8 @@ local heart1
 local heart2
 local heart3
 
-
+local scoreText
+local score
 -------------------------------------------------------------------
 --local functions
 -------------------------------------------------------------------
@@ -62,9 +63,10 @@ local function UpdateTime()
 			heart2.isVisible = false
 		elseif (lives == 1) then
 			heart1.isVisible = false
+			elseif (lives == 0) then
+				heart3.isVisible = false
 		end
 
-		AskQuestion()
 
 	end
 end
@@ -77,9 +79,6 @@ end
 
 
 
-------------------------------------------------------------------
---local functions
-------------------------------------------------------------------
 
 
 local function AskQuestion()
@@ -119,8 +118,7 @@ local function AskQuestion()
 		correctAnswer = randomNumber1 / randomNumber2
 
 		questionObject.text = randomNumber1 .. " / " .. randomNumber2 .. " = "
-		print=math.round (CorrectAnswer)
-
+		
 
 
 	end
@@ -162,9 +160,15 @@ local function NumericFieldListener( event )
 	end
 end
 
+local function roundToFirstDecimal(t)
+    return math.round(t*10)*0.1
+end
 
-
-
+local function addPoint( event )
+	if (userAnswer == correctAnswer) then 
+		score = score + 1
+	end
+end
 
 
 	
@@ -187,6 +191,8 @@ wrongObject = display.newText( "Incorrect!", display.contentWidth/2, display.con
 wrongObject:setTextColor(15/255, 170/255, 150/255)
 wrongObject.isVisible = false
 
+
+clockText = display.newText("", display.contentCenterX, 75, native.SystemFont, 70)
 
 
 --create numeric field
@@ -211,14 +217,14 @@ heart3 = display.newImageRect("Images/healthheart.png", 100, 100)
 heart3.x = display.contentWidth * 5 / 8 
 heart3.y = display.contentHeight * 1 / 7
 
-
+scoreText = display.newText("Score =", display.contentWidth/3, display.contentHeight/3, nil, 50)
 -----------------------------------------------------------
 --function calls
 -----------------------------------------------------------
 --call the function to ask the question
 AskQuestion()
 
-
+StartTimer()
 
 
 
